@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.mutable import MutableList
-from sqlalchemy.types import JSON
 from sqlalchemy.orm import mapped_column
+from sqlalchemy.types import JSON
 
 from database import Base
 
