@@ -1,0 +1,66 @@
+stages:
+  - lint
+  - test
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+
+before_script:
+  - python -m pip install --upgrade pip
+  - pip install flake8 isort black mypy pytest
+
+flake8:
+  stage: lint
+  script:
+    - flake8 .
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+  allow_failure: false
+
+isort:
+  stage: lint
+  script:
+    - isort --check-only .
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+  allow_failure: false
+
+black:
+  stage: lint
+  script:
+    - black --check .
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+  allow_failure: false
+
+mypy:
+  stage: lint
+  script:
+    - mypy .
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+  allow_failure: false
+
+pytest:
+  stage: test
+  script:
+    - pytest tests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+  allow_failure: false
