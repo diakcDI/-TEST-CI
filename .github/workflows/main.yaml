@@ -54,5 +54,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run pytest
+      - name: Run uvicorn
+        run: |
+          nohup uvicorn main:app --host 127.0.0.1 --port 8000 --reload &
+
+      - name: Wait uvicorn
+        run: sleep 5
+
+      - name: Run tests
         run: pytest tests
